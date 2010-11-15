@@ -26,14 +26,13 @@ BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.12.4
 BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
+BuildRequires:	hal-devel > 0.5.0
 BuildRequires:	intltool
-BuildRequires:	libexif-devel >= 0.6.13
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.12
 BuildRequires:	libtool
 BuildRequires:	libxfce4util-devel >= %{xfce_version}
 BuildRequires:	libxfce4ui-devel >= %{xfce_version}
-BuildRequires:	pcre-devel >= 6.0
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.311
@@ -111,10 +110,8 @@ Statyczne biblioteki Thunar.
 %build
 %configure \
 	--enable-dbus \
-	--enable-exif \
 	--enable-gnome-thumbnailers \
 	--enable-gtk-doc \
-	--enable-pcre \
 	--enable-startup-notification \
 	--with-html-dir=%{_gtkdocdir} \
 	%{?with_static_libs:--enable-static}
