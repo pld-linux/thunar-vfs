@@ -31,8 +31,8 @@ BuildRequires:	intltool
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.12
 BuildRequires:	libtool
-BuildRequires:	libxfce4util-devel >= %{xfce_version}
 BuildRequires:	libxfce4ui-devel >= %{xfce_version}
+BuildRequires:	libxfce4util-devel >= %{xfce_version}
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.311
@@ -41,7 +41,7 @@ BuildRequires:	xfce4-dev-tools
 BuildRequires:	xfce4-panel-devel >= %{xfce_version}
 BuildRequires:	xfconf-devel >= %{xfce_version}
 Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	gtk+2
+Requires(post,postun):	gtk-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	exo >= 0.3.100
