@@ -2,25 +2,23 @@
 # Conditional build:
 %bcond_without	static_libs	# don't build static library
 #
-%define		xfce_version	4.7.0
-
-%define		_realname	thunar-vfs
-Summary:	Xfce file manager
-Summary(pl.UTF-8):	Zarządca plików Xfce
+%define		xfce_version	4.8.0
+Summary:	Thunar VFS library
+Summary(pl.UTF-8):	Biblioteka Thunar VFS
 Name:		thunar-vfs
-Version:	1.1.1
-Release:	0.1
+Version:	1.2.0
+Release:	1
 License:	GPL v2 / LGPL v2
 Group:		X11/Applications
-Source0:	http://www.xfce.org/archive/xfce/4.8pre1/src/%{_realname}-%{version}.tar.bz2
-# Source0-md5:	2e9eb4d5d414d946a4c8268415eaecde
+Source0:	http://archive.xfce.org/src/xfce/thunar-vfs/1.2/%{name}-%{version}.tar.bz2
+# Source0-md5:	1fbc55af8ed98174f5c3c7f8daec10cc
 URL:		http://thunar.xfce.org/
 BuildRequires:	GConf2-devel >= 2.16.0
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake >= 1:1.8
 BuildRequires:	dbus-glib-devel >= 0.62
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	exo-devel >= 0.5.4
+BuildRequires:	exo-devel >= 0.6.0
 BuildRequires:	gamin-devel >= 0.1.0
 BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 1:2.12.4
@@ -31,84 +29,71 @@ BuildRequires:	intltool
 BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel >= 1.2.12
 BuildRequires:	libtool
-BuildRequires:	libxfce4ui-devel >= %{xfce_version}
 BuildRequires:	libxfce4util-devel >= %{xfce_version}
 BuildRequires:	perl-base
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	startup-notification-devel >= 0.8
-BuildRequires:	xfce4-dev-tools
-BuildRequires:	xfce4-panel-devel >= %{xfce_version}
-BuildRequires:	xfconf-devel >= %{xfce_version}
-Requires(post,postun):	desktop-file-utils
-Requires(post,postun):	gtk-update-icon-cache
-Requires(post,postun):	hicolor-icon-theme
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	exo >= 0.3.100
+BuildRequires:	xfce4-dev-tools >= 4.8.0
+Requires:	exo >= 0.6.0
 Requires:	shared-mime-info >= 0.15
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Thunar is a modern file manager, aiming to be easy-to-use and fast.
+Thunar VFS library.
 
 %description -l pl.UTF-8
-Thunar jest nowoczesnym zarządcą plików, nakierowanym na łatwość i
-szybkość użycia.
+Biblioteka Thunar VFS.
 
 %package apidocs
-Summary:	Thunar API documentation
-Summary(pl.UTF-8):	Dokumentacja API Thunar
+Summary:	Thunar VFS library API documentation
+Summary(pl.UTF-8):	Dokumentacja API biblioteki Thunar VFS
 Group:		Documentation
 Requires:	gtk-doc-common
 
 %description apidocs
-Thunar API documentation.
+Thunar VFS library API documentation.
 
 %description apidocs -l pl.UTF-8
-Dokumentacja API Thunar.
-
-%package libs
-Summary:	Thunar libraries
-Summary(pl.UTF-8):	Biblioteki Thunar
-Group:		X11/Libraries
-
-%description libs
-Thunar libraries.
-
-%description libs -l pl.UTF-8
-Biblioteki Thunar.
+Dokumentacja API biblioteki Thunar VFS.
 
 %package devel
-Summary:	Header files for Thunar libraries
-Summary(pl.UTF-8):	Pliki nagłówkowe bibliotek Thunar
+Summary:	Header files for Thunar VFS library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki Thunar VFS
 Group:		X11/Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-Requires:	exo-devel >= 0.3.100
-Requires:	gtk+2-devel >= 2:2.10.6
+Requires:	%{name} = %{version}-%{release}
+Requires:	exo-devel >= 0.6.0
+Requires:	glib2-devel >= 1:2.12.4
 
 %description devel
-This is the package containing the header files for Thunar libraries.
+This is the package containing the header files for Thunar VFS
+library.
 
 %description devel -l pl.UTF-8
-Ten pakiet zawiera pliki nagłówkowe biblioteki Thunar.
+Ten pakiet zawiera pliki nagłówkowe biblioteki Thunar VFS.
 
 %package static
-Summary:	Static Thunar libraries
-Summary(pl.UTF-8):	Statyczne biblioteki Thunar
+Summary:	Static Thunar VFS library
+Summary(pl.UTF-8):	Statyczna biblioteka Thunar VFS
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
-Static Thunar libraries.
+Static Thunar VFS library.
 
 %description static -l pl.UTF-8
-Statyczne biblioteki Thunar.
+Statyczna biblioteka Thunar VFS.
 
 %prep
-%setup -q -n %{_realname}-%{version}
+%setup -q
 
 %build
+%{__libtoolize}
+%{__aclocal}
+%{__automake}
+%{__autoheader}
+%{__autoconf}
 %configure \
+	--disable-silent-rules \
 	--enable-dbus \
 	--enable-gnome-thumbnailers \
 	--enable-gtk-doc \
@@ -124,82 +109,44 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%find_lang %{name} --all-name
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/ur_PK
+
+%find_lang %{name}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-%update_desktop_database_post
-%update_icon_cache hicolor
-
-%postun
-%update_desktop_database_postun
-%update_icon_cache hicolor
-
-%post	libs -p /sbin/ldconfig
-%postun	libs -p /sbin/ldconfig
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README THANKS TODO
-%attr(755,root,root) %{_bindir}/*
-%dir %{_sysconfdir}/xdg/Thunar
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/xdg/Thunar/*.xml
-%dir %{_libdir}/Thunar
-%attr(755,root,root) %{_libdir}/Thunar/ThunarBulkRename
-%attr(755,root,root) %{_libdir}/Thunar/ThunarHelp
-%attr(755,root,root) %{_libdir}/Thunar/thunar-sendto-email
-%dir %{_libdir}/thunarx-2
-%attr(755,root,root) %{_libdir}/thunarx-2/*.so
-%attr(755,root,root) %{_libdir}/xfce4/panel/plugins/libthunar-tpa.so
-
-%{_datadir}/Thunar
-%{_datadir}/xfce4/panel-plugins/*.desktop
-%{_datadir}/dbus-1/services/*.service
-%{_desktopdir}/*.desktop
-%{_iconsdir}/hicolor/*/*/*
-%{_pixmapsdir}/Thunar
-%{_mandir}/man1/Thunar*
-
-%dir %{_docdir}/Thunar
-# move it to proper place
-%{_docdir}/Thunar/README*
-
-%dir %{_docdir}/Thunar/html
-%{_docdir}/Thunar/html/C
-%{_docdir}/Thunar/html/*.css
-%lang(da) %{_docdir}/Thunar/html/da
-%lang(es) %{_docdir}/Thunar/html/es
-%lang(eu) %{_docdir}/Thunar/html/eu
-%lang(fr) %{_docdir}/Thunar/html/fr
-%lang(gl) %{_docdir}/Thunar/html/gl
-%lang(it) %{_docdir}/Thunar/html/it
-%lang(ja) %{_docdir}/Thunar/html/ja
-%lang(nl) %{_docdir}/Thunar/html/nl
-%lang(pl) %{_docdir}/Thunar/html/pl
-%lang(ru) %{_docdir}/Thunar/html/ru
-%lang(tr) %{_docdir}/Thunar/html/tr
-%lang(zh_TW) %{_docdir}/Thunar/html/zh_TW
+%doc AUTHORS ChangeLog NEWS README
+%attr(755,root,root) %{_libdir}/libthunar-vfs-1.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libthunar-vfs-1.so.2
+%dir %{_libdir}/thunar-vfs-1
+%attr(755,root,root) %{_libdir}/thunar-vfs-1/thunar-vfs-font-thumbnailer-1
+%attr(755,root,root) %{_libdir}/thunar-vfs-1/thunar-vfs-mime-cleaner-1
+%attr(755,root,root) %{_libdir}/thunar-vfs-1/thunar-vfs-pixbuf-thumbnailer-1
+%attr(755,root,root) %{_libdir}/thunar-vfs-1/thunar-vfs-update-thumbnailers-cache-1
+%dir %{_datadir}/thumbnailers
+%{_datadir}/thumbnailers/thunar-vfs-font-thumbnailer-1.desktop
+%{_docdir}/thunar-vfs
 
 %files apidocs
 %defattr(644,root,root,755)
-%{_gtkdocdir}/thunarx
-
-%files libs
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libthunarx-2.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libthunarx-2.so.0
+%{_gtkdocdir}/thunar-vfs
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libthunarx-2.so
-%{_libdir}/libthunarx-2.la
-%{_includedir}/thunarx-2
-%{_pkgconfigdir}/thunarx-2.pc
+%attr(755,root,root) %{_libdir}/libthunar-vfs-1.so
+%{_includedir}/thunar-vfs-1
+%{_pkgconfigdir}/thunar-vfs-1.pc
 
 %if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
-%{_libdir}/libthunarx-2.a
+%{_libdir}/libthunar-vfs-1.a
 %endif
