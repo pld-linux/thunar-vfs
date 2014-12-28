@@ -20,7 +20,7 @@ BuildRequires:	dbus-glib-devel >= 0.62
 BuildRequires:	docbook-dtd412-xml
 BuildRequires:	exo-devel >= 0.6.0
 BuildRequires:	gamin-devel >= 0.1.0
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.12.4
 BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
